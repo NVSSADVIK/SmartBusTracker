@@ -112,18 +112,18 @@ export default function LocationSearch({
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
             {geoStatus === "granted"
-              ? "Showing stops nearest to your GPS position"
+              ? "Showing bus stops nearest to your location"
               : geoStatus === "denied"
-              ? "GPS permission denied — enter your stop or area below"
-              : "Detecting location or search any transit stop"}
+              ? "Location permission off — search your stop or area below"
+              : "Find stops near you or search any corridor"}
           </p>
         </div>
 
         <button
           type="button"
           onClick={onRequestLocation}
-          className="inline-flex items-center gap-1.5 self-start sm:self-center px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded border border-slate-300 transition-colors"
-          title="Detect GPS location"
+          className="inline-flex items-center gap-1.5 self-start sm:self-center px-2.5 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 active:bg-slate-300 rounded border border-slate-300 transition-colors shadow-2xs"
+          title="Use current location to find nearest stops"
         >
           {geoStatus === "prompt" ? (
             <>
@@ -133,7 +133,7 @@ export default function LocationSearch({
           ) : (
             <>
               <Crosshair className="w-3.5 h-3.5 text-sky-600" />
-              <span>Use Current GPS</span>
+              <span>Use My Location</span>
             </>
           )}
         </button>
@@ -151,7 +151,7 @@ export default function LocationSearch({
             type="text"
             value={searchQuery}
             onChange={handleSearchChange}
-            placeholder="Search by stop name, area (e.g. CMBT, Guindy, Adyar)..."
+            placeholder="Search by stop name or area (e.g. CMBT, Guindy, Adyar)..."
             className="w-full pl-9 pr-8 py-2 text-sm bg-slate-50 border border-slate-300 rounded focus:bg-white focus:outline-hidden focus:border-sky-600 focus:ring-1 focus:ring-sky-600 transition-colors placeholder:text-slate-400"
           />
           {searchQuery && (
@@ -171,7 +171,7 @@ export default function LocationSearch({
         <div className="mt-2.5 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800 flex items-start gap-2">
           <AlertCircle className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
           <div>
-            <span>Location access is disabled in your browser. Showing standard transit corridors. Use the search bar above to jump directly to your stop.</span>
+            <span>Location access is disabled in your browser. Showing popular transit hubs. Use the search bar above to jump directly to your stop.</span>
           </div>
         </div>
       )}
@@ -179,14 +179,14 @@ export default function LocationSearch({
       {/* Stops List */}
       <div className="mt-3">
         <div className="flex items-center justify-between text-xs text-slate-500 mb-1.5 px-0.5">
-          <span>{isSearching ? "Search Results" : "Nearest Bus Stops"}</span>
+          <span>{isSearching ? "Search Results" : "Nearby Bus Stops"}</span>
           {stopsList.length > 0 && <span>{stopsList.length} stops available</span>}
         </div>
 
         {isLoading ? (
           <div className="py-6 text-center text-slate-500 text-xs flex flex-col items-center justify-center gap-2">
             <Loader2 className="w-5 h-5 animate-spin text-sky-600" />
-            <span>Fetching stops from transit backend...</span>
+            <span>Finding nearby bus stops...</span>
           </div>
         ) : errorMsg ? (
           <div className="py-4 px-3 bg-red-50 border border-red-200 text-red-700 rounded text-xs">

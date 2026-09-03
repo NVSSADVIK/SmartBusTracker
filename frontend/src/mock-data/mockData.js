@@ -104,7 +104,7 @@ export function getMockBusesForStop(stopId, baseStopCoords) {
         current_lat: centerLat - 0.007,
         current_lng: centerLng - 0.004,
         intermediate_stops_away: 2,
-        ticket_sales_rate: "Low (Conductor issued 3 tickets in last 10m)",
+        ticket_sales_rate: "Low passenger load • Seats widely available",
         is_recommended: true
       },
       {
@@ -119,7 +119,7 @@ export function getMockBusesForStop(stopId, baseStopCoords) {
         current_lat: centerLat - 0.015,
         current_lng: centerLng + 0.005,
         intermediate_stops_away: 4,
-        ticket_sales_rate: "Moderate (ETM shows steady boardings)",
+        ticket_sales_rate: "Steady passenger boardings • Few seats remaining",
         is_recommended: false
       },
       {
@@ -134,7 +134,7 @@ export function getMockBusesForStop(stopId, baseStopCoords) {
         current_lat: centerLat + 0.021,
         current_lng: centerLng - 0.009,
         intermediate_stops_away: 7,
-        ticket_sales_rate: "High (Peak corridor loading)",
+        ticket_sales_rate: "High passenger load • Standing room only",
         is_recommended: false
       }
     ],
@@ -151,7 +151,7 @@ export function getMockBusesForStop(stopId, baseStopCoords) {
         current_lat: centerLat - 0.005,
         current_lng: centerLng - 0.003,
         intermediate_stops_away: 1,
-        ticket_sales_rate: "Low (ETM reports 28 vacant seats)",
+        ticket_sales_rate: "Low boarding volume • Open seats available",
         is_recommended: true
       },
       {
@@ -166,7 +166,7 @@ export function getMockBusesForStop(stopId, baseStopCoords) {
         current_lat: centerLat - 0.012,
         current_lng: centerLng + 0.004,
         intermediate_stops_away: 3,
-        ticket_sales_rate: "Moderate (38 seats occupied)",
+        ticket_sales_rate: "Moderate passenger crowd • Few open seats",
         is_recommended: false
       },
       {
@@ -181,7 +181,7 @@ export function getMockBusesForStop(stopId, baseStopCoords) {
         current_lat: centerLat - 0.018,
         current_lng: centerLng - 0.008,
         intermediate_stops_away: 5,
-        ticket_sales_rate: "High (Conductor ETM: Standing crowd)",
+        ticket_sales_rate: "Heavy passenger volume • Standing room only",
         is_recommended: false
       }
     ]
@@ -205,7 +205,7 @@ export function getMockBusesForStop(stopId, baseStopCoords) {
       current_lat: centerLat - 0.006,
       current_lng: centerLng - 0.003,
       intermediate_stops_away: 2,
-      ticket_sales_rate: "Low ticketing volume on current stretch",
+      ticket_sales_rate: "Low crowd density • High chance of seats",
       is_recommended: true
     },
     {
@@ -220,7 +220,7 @@ export function getMockBusesForStop(stopId, baseStopCoords) {
       current_lat: centerLat - 0.014,
       current_lng: centerLng + 0.006,
       intermediate_stops_away: 4,
-      ticket_sales_rate: "Moderate boardings recorded",
+      ticket_sales_rate: "Moderate crowd • Seats filling steadily",
       is_recommended: false
     },
     {
@@ -235,7 +235,7 @@ export function getMockBusesForStop(stopId, baseStopCoords) {
       current_lat: centerLat + 0.019,
       current_lng: centerLng - 0.007,
       intermediate_stops_away: 6,
-      ticket_sales_rate: "Peak load (85%+ capacity reached)",
+      ticket_sales_rate: "Peak load • Standing passengers reported",
       is_recommended: false
     }
   ];

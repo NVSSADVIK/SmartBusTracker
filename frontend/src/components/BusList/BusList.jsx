@@ -90,7 +90,7 @@ export default function BusList({
           {wsStatus === "connected" ? (
             <span
               className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium text-emerald-800 bg-emerald-50 rounded border border-emerald-200"
-              title="Live WebSocket feed active"
+              title="Real-time transit updates active"
             >
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               Live Feed
@@ -98,10 +98,10 @@ export default function BusList({
           ) : wsStatus === "stale" ? (
             <span
               className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium text-amber-800 bg-amber-50 rounded border border-amber-300"
-              title="Connection dropped. Displaying last known data while reconnecting."
+              title="Reconnecting to feed. Displaying latest confirmed arrivals."
             >
               <AlertTriangle className="w-3 h-3 text-amber-600" />
-              Reconnecting (Stale)
+              Updating...
             </span>
           ) : wsStatus === "connecting" ? (
             <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[11px] font-medium text-slate-700 bg-slate-100 rounded border border-slate-300">
@@ -120,7 +120,7 @@ export default function BusList({
       {/* Stale warning banner when websocket drops */}
       {wsStatus === "stale" && (
         <div className="mt-2.5 p-2 bg-amber-50 border border-amber-200 rounded text-xs text-amber-800 flex items-center justify-between">
-          <span>Live feed paused. Reconnecting to backend WebSocket... ETAs may be slightly delayed.</span>
+          <span>Refreshing live feed... Showing latest confirmed bus arrivals.</span>
         </div>
       )}
 
@@ -133,7 +133,7 @@ export default function BusList({
         ) : isLoading ? (
           <div className="py-8 text-center text-slate-500 text-xs flex flex-col items-center justify-center gap-2">
             <div className="w-5 h-5 border-2 border-slate-300 border-t-sky-600 rounded-full animate-spin"></div>
-            <span>Fetching approaching buses & conductor ETM predictions...</span>
+            <span>Finding approaching buses &amp; seat chances...</span>
           </div>
         ) : errorMsg ? (
           <div className="py-4 px-3 bg-red-50 border border-red-200 text-red-700 rounded text-xs">
@@ -179,23 +179,23 @@ export default function BusList({
                         </div>
 
                         <div className="text-xs text-slate-500 mt-0.5 flex items-center gap-2 flex-wrap">
-                          <span>Bus ID: <span className="font-mono text-slate-700">{bus.bus_id}</span></span>
+                          <span>Bus <span className="font-mono text-slate-700 font-medium">{bus.bus_id}</span></span>
                           <span>•</span>
                           <span
                             className={`inline-flex items-center gap-1 font-medium ${
                               bus.last_signal_type === "ETM_DERIVED"
-                                ? "text-slate-700"
+                                ? "text-slate-600"
                                 : "text-sky-700"
                             }`}
                             title={
                               bus.last_signal_type === "ETM_DERIVED"
-                                ? "Position derived from conductor electronic ticket machine sales"
-                                : "Position verified with onboard GPS ping"
+                                ? "Position calculated from live conductor ticket issuance"
+                                : "Position verified with onboard GPS signal"
                             }
                           >
                             <span className="w-1.5 h-1.5 rounded-full bg-current"></span>
                             {bus.last_signal_type === "ETM_DERIVED"
-                              ? "ETM Ticket Derived"
+                              ? "Live from conductor data"
                               : "Live GPS"}
                           </span>
                         </div>
@@ -219,7 +219,7 @@ export default function BusList({
                     </div>
                   </div>
 
-                  {/* Card footer: ETM details & trigger for deep ETA info */}
+                  {/* Card footer: Crowd details & trigger for trip info */}
                   <div className="mt-2 pt-2 border-t border-slate-100 flex items-center justify-between text-xs text-slate-500">
                     <span className="truncate pr-2">
                       {bus.ticket_sales_rate || `Updated ${bus.last_signal_time || "live"}`}
@@ -229,7 +229,7 @@ export default function BusList({
                       onClick={(e) => handleOpenEtaDetails(e, bus)}
                       className="inline-flex items-center gap-0.5 font-medium text-sky-700 hover:text-sky-900 transition-colors shrink-0"
                     >
-                      <span>ETA breakdown</span>
+                      <span>Trip details</span>
                       <ChevronRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -240,7 +240,7 @@ export default function BusList({
         )}
       </div>
 
-      {/* Modal / Sheet for GET /buses/{bus_id}/eta?stop_id= */}
+      {/* Modal / Sheet for detailed bus trip information */}
       {modalBusDetails && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-xs">
           <div className="bg-white border border-slate-300 rounded-lg max-w-md w-full p-4 shadow-lg">
@@ -250,32 +250,33 @@ export default function BusList({
                   {modalBusDetails.bus.route_no}
                 </span>
                 <h3 className="text-sm font-semibold text-slate-900">
-                  ETA Breakdown & Prediction Model
+                  Route &amp; Arrival Details
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setModalBusDetails(null)}
-                className="text-slate-400 hover:text-slate-700 p-1"
+                className="text-slate-400 hover:text-slate-700 p-1 rounded transition-colors"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="mt-3 text-xs text-slate-700 space-y-3">
-              <div className="bg-slate-50 p-2.5 rounded border border-slate-200">
-                <div className="text-[11px] uppercase font-semibold text-slate-500 mb-1">
-                  How arrival & seat odds are calculated
+              <div className="bg-sky-50/70 p-3 rounded border border-sky-100">
+                <div className="text-[11px] uppercase font-semibold text-sky-900 mb-1 flex items-center gap-1.5">
+                  <Sparkles className="w-3.5 h-3.5 text-sky-600" />
+                  <span>How live arrival &amp; seat predictions work</span>
                 </div>
                 <p className="text-slate-600 leading-relaxed">
-                  Government buses often lack continuous GPS tracking. Our model derives real-time bus progression and seat availability directly from conductor Electronic Ticket Machine (ETM) issuance timestamps and corridor traversal velocity.
+                  State transport buses issue electronic tickets as passengers board. Our prediction engine analyzes these ticketing records in real time to calculate bus progression along the corridor and forecast seat availability before the bus reaches your stop.
                 </p>
               </div>
 
               {modalBusDetails.loading ? (
                 <div className="py-6 text-center text-slate-500 flex items-center justify-center gap-2">
                   <div className="w-4 h-4 border-2 border-slate-300 border-t-sky-600 rounded-full animate-spin"></div>
-                  <span>Querying backend ETA endpoint...</span>
+                  <span>Checking latest live arrivals...</span>
                 </div>
               ) : modalBusDetails.error ? (
                 <div className="p-2.5 bg-red-50 text-red-700 rounded border border-red-200">
@@ -287,7 +288,7 @@ export default function BusList({
                     <div className="p-2 border border-slate-200 rounded">
                       <div className="text-slate-500">Estimated Arrival</div>
                       <div className="font-semibold text-slate-900 text-sm mt-0.5">
-                        {modalBusDetails.bus.eta_minutes} mins
+                        {modalBusDetails.bus.eta_minutes <= 1 ? "Due now" : `${modalBusDetails.bus.eta_minutes} mins`}
                       </div>
                     </div>
                     <div className="p-2 border border-slate-200 rounded">
@@ -329,7 +330,7 @@ export default function BusList({
                   )}
 
                   <div className="text-[11px] text-slate-500">
-                    Confidence: <span className="font-semibold text-slate-700">{modalBusDetails.bus.confidence_score ? `${Math.round(modalBusDetails.bus.confidence_score * 100)}%` : "High"}</span>
+                    Prediction Reliability: <span className="font-semibold text-slate-700">{modalBusDetails.bus.confidence_score ? `${Math.round(modalBusDetails.bus.confidence_score * 100)}% (High)` : "High"}</span>
                   </div>
                 </>
               )}
@@ -339,7 +340,7 @@ export default function BusList({
               <button
                 type="button"
                 onClick={() => setModalBusDetails(null)}
-                className="px-3 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded border border-slate-300"
+                className="px-3.5 py-1.5 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded border border-slate-300 transition-colors"
               >
                 Close
               </button>
