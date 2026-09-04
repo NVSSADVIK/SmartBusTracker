@@ -141,3 +141,17 @@ dist
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 .vite/
+
+# Production build outputs
+/dist
+/build
+
+# Local environment variables (API keys)
+.env
+.env.local
+.env.*.local
+
+# npm log files
+npm-debug.log*
+logs
+*.log
